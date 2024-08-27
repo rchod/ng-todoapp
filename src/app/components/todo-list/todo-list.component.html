@@ -1,0 +1,49 @@
+<div class="grid md:grid-cols-4 mt-28">
+  <div></div>
+  <div class="text-center md:col-span-2 p-4">
+    <h1 class="text-8xl p-4">Todos</h1>
+    <input
+      autofocus
+      class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+      type="text"
+      placeholder="What needs to be done today ?"
+      [formControl]="newTodoItem"
+      (keydown.enter)="addTodoItem()"
+    />
+    <div class="flex flex-col items-center mt-4 shadow-lg text-sm">
+      <div
+        *ngIf="TODO_LIST.length"
+        class="w-full grid grid-cols-4 items-center"
+      >
+        <div>
+          {{ getRemainingTodos() }} Item{{
+            getRemainingTodos() == 1 ? "" : "s"
+          }}
+          left
+        </div>
+        <button (click)="checkAll()" class="btn">CHECK ALL</button>
+        <button (click)="clearCompleted()" class="btn flex-1">
+          CLEAR COMPLETED
+        </button>
+
+        <select
+          aria-label="Filter todos"
+          [(ngModel)]="_filter"
+          #ctrl="ngModel"
+          name="filter"
+          class="text-center hover:cursor-pointer"
+        >
+          <option value="-1" selected="true">FILTER:ALL</option>
+          <option value="{{ TODOITEM_STATUS.OPEN }}">FILTER:Active</option>
+          <option value="{{ TODOITEM_STATUS.DONE }}">FILTER:Completed</option>
+        </select>
+      </div>
+      <app-todo-list-item
+        class="w-full text-left"
+        *ngFor="let item of getTodoList(); trackBy: trackById"
+        [item]="item"
+      ></app-todo-list-item>
+    </div>
+  </div>
+  <div></div>
+</div>
